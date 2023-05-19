@@ -52,8 +52,8 @@ class Net(nn.Module):
   - RandomHorizontalFlip(0.5)
 - 训练策略
   - 
+
 - 推理策略
   - TTA
   - 模型融合
     - 使用随机空间搜索
-
