@@ -19,6 +19,8 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 2、推断生成高度详细、清晰的焦点、插图、宏伟、史诗般的 3d 渲染图像的prompt
 
 ##### 解决方案：
+![Uploading image.png…]()
+
 
 - 数据收集、生成和清理（38w）
 
