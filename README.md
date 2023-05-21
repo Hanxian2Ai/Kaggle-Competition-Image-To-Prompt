@@ -32,7 +32,7 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
   - 选择CLIP模型作为基准模型，包括clip-vit-large-224和clip-vit-large-336
   - 加一层全连接层，输出（1，384）维的embedding
 
-  ```
+  ```python
   class Net(nn.Module):
       def __init__(self):
           super(Net, self).__init__()
@@ -76,7 +76,7 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 
   - TTA
 
-    ```
+    ```python
     def predict(images,
         model_path,
         model_name,
@@ -109,7 +109,7 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 
   - 模型融合
 
-    ```
+    ```python
     class WeightedAverage(nn.Module):
         def __init__(self, n):
             super().__init__()
