@@ -71,7 +71,8 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 
 - 训练策略
 
-  - [Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution，ICCV 2022 oral](https://arxiv.org/abs/2202.10054) 先只训练最后一层线性连接层，然后再整个模型进行微调
+  - [Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution，ICLR (Oral) 2022](https://arxiv.org/abs/2202.10054) 
+  先只训练最后一层线性连接层，然后再整个模型进行微调
   ![](https://github.com/Hanxian2Ai/image2prompt/blob/main/md_image/Snipaste_2023-05-21_20-00-28.png)
 
 - 推理策略
