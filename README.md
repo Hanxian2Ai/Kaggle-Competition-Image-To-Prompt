@@ -1,4 +1,4 @@
-## Bronze Medal Solution For 'Kaggle Complete : Stable Diffusion - Image to Prompts'
+## Bronze Medal Solution For Kaggle Complete : Stable Diffusion - Image to Prompts
 
 kaggle主页 :  https://www.kaggle.com/hanxian0820
 
@@ -21,6 +21,7 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 ##### 解决方案：
 
 - 数据收集、生成和清理（38w）
+
   - DiffusionDB 200 万图像提示子集数据集：https://poloclub.github.io/diffusiondb/
   - 文本提示符进行清洗：去重、长度筛选、字符筛选、语义相似度筛选
   - 删除重复的文本及其图片：计算相似度 使用向量搜索库**faiss-gpu**
@@ -30,30 +31,100 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
   - 选择CLIP模型作为基准模型，包括clip-vit-large-224和clip-vit-large-336
   - 加一层全连接层，输出（1，384）维的embedding
 
+  ```
+  class Net(nn.Module):
+      def __init__(self):
+          super(Net, self).__init__()
+          clip = AutoModel.from_pretrained("clip-vit-224")
+          self.vision = clip.vision_model
+          self.fc = nn.Linear(1024, 384)
+         	#1st solution
+          nn.init.xavier_uniform_(self.fc.weight)
+  
+  
+      def forward(self, x):
+          x = self.vision(x)['pooler_output']
+          x = self.fc(x)
+          return x
+  ```
+
+  - 第一名解决方案，在最后的输出层前加一层大的全连接层
+
 
   ```python
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        clip = AutoModel.from_pretrained("clip-vit-224")
-        self.vision = clip.vision_model
-        self.fc = nn.Linear(1024, 384)
-        nn.init.xavier_uniform_(self.fc.weight)
-
-
-    def forward(self, x):
-        x = self.vision(x)['pooler_output']
-        x = self.fc(x)
-        return x
+    ebd_dim = 1024
+    fc_dim = 16 * 1024
+    self.head = nn.Sequential(
+      nn.Linear(ebd_dim, fc_dim),
+      nn.BatchNorm1d(fc_dim),
+      nn.ReLU(),
+      nn.Linear(fc_dim, 384),
+    )
   ```
 
 - 数据增加
-  - mixGen
+
+  - Mixgen([Mixgen: A new multi-modal data augmentation](https://openaccess.thecvf.com/content/WACV2023W/Pretrain/html/Hao_MixGen_A_New_Multi-Modal_Data_Augmentation_WACVW_2023_paper.html))
   - RandomHorizontalFlip(0.5)
+
 - 训练策略
-  - 
+
+  - [LP-FT](https://arxiv.org/abs/2202.10054) 先只训练最后一层线性连接层，然后再整个模型进行微调
 
 - 推理策略
+
   - TTA
+
+    ```
+    def predict(images,
+        model_path,
+        model_name,
+        input_size,
+        batch_size
+    ):   
+        tta_preds = None
+        for _ in range(2):
+            preds = []
+            for X in tqdm(dataloader, leave=False):
+                X = X.to(device)
+    
+                with torch.no_grad():
+                    X_out = model(X).cpu().numpy()
+                    # L2 normalize -- Start
+                    X_out = X_out / ( np.abs(X_out).max(axis=-1, keepdims=True) + 1e-8)  
+                    X_out = normalize( X_out )
+                    # L2 normalize -- End
+                    preds.append(X_out)
+                    
+            if tta_preds is None:
+                tta_preds = np.vstack(preds).flatten()
+            else:
+                tta_preds += np.vstack(preds).flatten()
+        
+        return tta_preds / 2
+    ```
+
+    
+
   - 模型融合
-    - 使用随机空间搜索
+
+    ```
+    class WeightedAverage(nn.Module):
+        def __init__(self, n):
+            super().__init__()
+            self.weight = nn.Linear(n, 1, bias=False)
+            with torch.no_grad():
+                self.weight.weight[:] = 1.0
+    
+        def forward(self, x, y):
+            y_hat = self.weight(x)[..., 0]
+            y_hat = torch.nn.functional.normalize(y_hat, dim=-1)
+            cos_sim = (y * y_hat).sum(dim=-1)
+            loss = -cos_sim.mean()
+            return loss
+    ```
+
+    
+
+
+
