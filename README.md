@@ -70,7 +70,7 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 
 - 训练策略
 
-  - [LP-FT](https://arxiv.org/abs/2202.10054) 先只训练最后一层线性连接层，然后再整个模型进行微调
+  - [Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution](https://arxiv.org/abs/2202.10054) 先只训练最后一层线性连接层，然后再整个模型进行微调
 
 - 推理策略
 
