@@ -66,11 +66,13 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 - 数据增加
 
   - Mixgen([Mixgen: A new multi-modal data augmentation](https://openaccess.thecvf.com/content/WACV2023W/Pretrain/html/Hao_MixGen_A_New_Multi-Modal_Data_Augmentation_WACVW_2023_paper.html))
+  ![](https://github.com/Hanxian2Ai/image2prompt/blob/main/md_image/Snipaste_2023-05-21_19-59-15.png)
   - RandomHorizontalFlip(0.5)
 
 - 训练策略
 
   - [Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution](https://arxiv.org/abs/2202.10054) 先只训练最后一层线性连接层，然后再整个模型进行微调
+  ![](https://github.com/Hanxian2Ai/image2prompt/blob/main/md_image/Snipaste_2023-05-21_20-00-28.png)
 
 - 推理策略
 
