@@ -25,8 +25,29 @@ kaggle主页 :  https://www.kaggle.com/hanxian0820
 
   - DiffusionDB 200 万图像提示子集数据集：https://poloclub.github.io/diffusiondb/
   - 文本提示符进行清洗：去重、长度筛选、字符筛选、语义相似度筛选
-  - 删除重复的文本及其图片：计算相似度 使用向量搜索库**faiss-gpu**
+  - 删除重复的文本及其图片：计算相似度 使用向量搜索库[**faiss-gpu**](https://github.com/facebookresearch/faiss)
+```python
+model = SentenceTransformer("sentence-transformers-222/all-MiniLM-L6-v2")
+vector = model.encode(pldf["prompt"].to_numpy(), batch_size=1024, show_progress_bar=True, device="cuda", convert_to_tensor=True)
 
+threshold = 0.85  
+n_neighbors = 5000  
+batch_size = 5000 
+similar_vectors = []  
+
+index = faiss.IndexFlatIP(384)
+
+index.add(F.normalize(vector).cpu().numpy())
+
+for i in tqdm(range(0, len(vector), batch_size)):
+    batch_data = vector.cpu().numpy()[i:i + batch_size]
+    similarities, indices = index.search(batch_data, n_neighbors)
+    for j in range(similarities.shape[0]):
+        close_vectors = indices[j, similarities[j] >= threshold]
+        index_base = i
+        close_vectors = close_vectors[close_vectors != index_base + j]
+        similar_vectors.append((index_base + j, close_vectors))
+```
 - model
 
   - 选择CLIP模型作为基准模型，包括clip-vit-large-224和clip-vit-large-336
