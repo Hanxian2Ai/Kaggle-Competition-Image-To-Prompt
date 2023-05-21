@@ -60,7 +60,6 @@ for i in tqdm(range(0, len(vector), batch_size)):
           clip = AutoModel.from_pretrained("clip-vit-224")
           self.vision = clip.vision_model
           self.fc = nn.Linear(1024, 384)
-         	#1st solution
           nn.init.xavier_uniform_(self.fc.weight)
   
   
