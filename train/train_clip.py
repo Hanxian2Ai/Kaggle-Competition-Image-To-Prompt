@@ -132,10 +132,10 @@ if __name__ == "__main__":
     optimizer.zero_grad()
     train_dataloader = DataLoader(dataset=IMGDataset(df, "train/"),
                                   batch_size=BATCHSIZE, shuffle=True, num_workers=8, collate_fn=DiffusionCollator())
-    test_dataloader = DataLoader(dataset=IMGDataset(pd.read_csv('example/prompts.csv'), 'train/'),
+    test_dataloader = DataLoader(dataset=IMGDataset(pd.read_csv('../example/prompts.csv'), 'train/'),
                                  batch_size=BATCHSIZE, shuffle=False, num_workers=8, collate_fn=DiffusionCollator())
 
-    test_7_dataloader = DataLoader(dataset=IMGDataset(pd.read_csv('example/prompts.csv'), 'train/'),
+    test_7_dataloader = DataLoader(dataset=IMGDataset(pd.read_csv('../example/prompts.csv'), 'train/'),
                                    batch_size=7, shuffle=False, num_workers=8, collate_fn=DiffusionCollator())
     ttl_iters = NEPOCH * len(train_dataloader)
     scheduler = CosineAnnealingLR(optimizer, T_max=ttl_iters, eta_min=1e-6)

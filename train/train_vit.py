@@ -226,6 +226,6 @@ def train(
 
 
 trn_df = pd.read_csv('train_38w_clean.csv')
-val_df = pd.read_csv('example/prompts.csv')
+val_df = pd.read_csv('../example/prompts.csv')
 # trn_df, val_df = train_test_split(trn_df, test_size=0.1, random_state=CFG.seed)
 train(trn_df, val_df, CFG.model_name, CFG.input_size, CFG.batch_size, CFG.num_epochs, CFG.lr)
