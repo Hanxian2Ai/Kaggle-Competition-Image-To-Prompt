@@ -1,4 +1,4 @@
-## Bronze Medal Solution For Kaggle Complete : Stable Diffusion - Image to Prompts
+## Bronze Medal Solution For Kaggle Competition : Stable Diffusion - Image to Prompts
 
 kaggle主页 :  https://www.kaggle.com/hanxian0820
 
