@@ -1,8 +1,6 @@
 ## Bronze Medal Solution For Kaggle Competition : Stable Diffusion - Image to Prompts
 
-kaggle主页 :  https://www.kaggle.com/hanxian0820
-
-个人成绩：**Top8% 铜牌**  🥉🥉🥉
+个人成绩：**Top3% 铜牌** 
 
 **赛题介绍：**
 
